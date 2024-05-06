@@ -4,13 +4,15 @@ import Image from "next/image";
 import PostUser from "@/components/postUser/postUser";
 import { getPost } from "@/lib/data";
 
-// const getDate = async (slug) => {
-//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${slug}`);
-//   if (!res.ok) {
-//     throw new Error("Somthing went wrong");
-//   }
-//   return res.json();
-// };
+const getDate = async (slug) => {
+  //   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${slug}`);
+  const res = await fetch(`http://localhost:3000/api/blog/${slug}`);
+  if (!res.ok) {
+    throw new Error("Somthing went wrong");
+  }
+  return res.json();
+};
+
 export const generateMetadata = async ({ params }) => {
   const { slug } = params;
   const post = await getPost(slug);
@@ -22,8 +24,8 @@ export const generateMetadata = async ({ params }) => {
 };
 
 const page = async ({ params }) => {
-  // const post = await getDate(params.slug);
-  const post = await getPost(params.slug);
+  const post = await getDate(params.slug);
+  // const post = await getPost(params.slug);
   console.log({ post });
   return (
     <div className={styles.container}>
