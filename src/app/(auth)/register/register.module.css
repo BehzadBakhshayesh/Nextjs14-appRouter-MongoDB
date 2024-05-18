@@ -13,26 +13,3 @@
   gap: 30px;
   border-radius: 5px;
 }
-.form {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 30px;
-}
-.form input {
-  padding: 20px;
-  background-color: var(--bg);
-  color: var(--textColor);
-  border: none;
-  border-radius: 5px;
-}
-
-.button {
-  padding: 20px;
-  min-width: 120px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--btn);
-  color: var(--text);
-}
