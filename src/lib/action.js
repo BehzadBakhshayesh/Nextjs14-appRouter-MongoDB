@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs";
 //   "use server";
 //   console.log("hello");
 // };
-export const addPosts = async (formData) => {
+export const addPosts = async (previousState, formData) => {
   //   "use server";
   //   const title = formData.get("title");
   //   const desc = formData.get("desc");
@@ -23,6 +23,7 @@ export const addPosts = async (formData) => {
     const newPost = new Post({ title, desc, slug, userId });
     await newPost.save();
     revalidatePath("/blog");
+    revalidatePath("/admin");
     revalidatePath("/serverActionTest");
   } catch (error) {
     return {
@@ -35,12 +36,48 @@ export const addPosts = async (formData) => {
 
 export const deletePosts = async (formData) => {
   //   "use server";
+  const { id } = Object.fromEntries(formData);
+  try {
+    connectToDb();
+    await Post.findByIdAndDelete(id);
+
+    revalidatePath("/blog");
+    revalidatePath("/admin");
+    revalidatePath("/serverActionTest");
+  } catch (error) {
+    return {
+      error: "Something went Wrong",
+    };
+  }
+};
+
+export const addUser = async (previousState, formData) => {
+  const { username, email, password, img } = Object.fromEntries(formData);
+
+  try {
+    connectToDb();
+    const newUser = new User({ username, email, password, img });
+    await newUser.save();
+    revalidatePath("/admin");
+    revalidatePath("/serverActionTest");
+  } catch (error) {
+    return {
+      error: "Something went Wrong",
+    };
+  }
+
+  console.log({ title, desc, slug, userId });
+};
+
+export const deleteUser = async (formData) => {
+  //   "use server";
   const { postId } = Object.fromEntries(formData);
   try {
     connectToDb();
-    await Post.findByIdAndDelete(postId);
+    await Post.deleteMany({ userId: id });
+    await User.findByIdAndDelete(postId);
 
-    revalidatePath("/blog");
+    revalidatePath("/admin");
     revalidatePath("/serverActionTest");
   } catch (error) {
     return {
